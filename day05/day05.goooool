@@ -1,0 +1,136 @@
+package main
+
+import (
+	"fmt"
+	"os"
+	"sort"
+	"strconv"
+	"strings"
+    "regexp"
+)
+func calc_score_2(input []string) int {
+    return 0;
+}
+
+func Split(r rune) bool {
+    return r == ',' || r == '-'
+}
+
+func makeRange(min, max int) []int {
+    a := make([]int, max-min+1)
+    for i := range a {
+        a[i] = min + i
+    }
+    // fmt.Printf("range: %v\n", a);
+    return a
+}
+func makeRangeStr(min, max string) []int {
+    max_i := atoi(max);
+    min_i := atoi(min);
+
+    return makeRange(min_i,max_i);
+
+}
+func atoi(input string) int {
+    val,_ := strconv.Atoi(input);
+    return val;
+}
+func parse_input(input []string) map[int][]string {
+    output := make(map[int][]string)
+    nr_bins := len(strings.Fields(input[0]));
+    // var crates []string
+    re, _ := regexp.Compile(`[^\w]`)
+    re2, _ := regexp.Compile(`\s{3}`)
+    for _, crates := range input[1:] {
+        crates = re2.ReplaceAllString(crates, "[x]")
+        crates = re.ReplaceAllString(crates, "")
+        // fmt.Printf("\ncrates :\n%v",crates);
+        for bin_nr := 0;bin_nr < nr_bins; bin_nr++ {
+            crate := string(crates[bin_nr])
+            if crate != "x" {
+                output[bin_nr] = append(output[bin_nr], crate);
+            }
+        }
+        // tmp := strings.Fields(crates);
+        // fmt.Printf("\ncrate :\n%v",output);
+
+    }
+	// fmt.Printf("\nsize:\n%v", len(bins))
+	// fmt.Printf("\ncrates:\n%v", crates);
+    // for _,bin := range bins {
+    //     ind,_ : = strconv.Atoi(bin);
+    //     output[ind] = ;
+    // }
+    // round1 := strings.FieldsFunc(input,Split);
+    // set1 := mapset.NewSet[int]();
+    // set2 := mapset.NewSet[int]();
+    //
+    // for _,val := range makeRangeStr(round1[0],round1[1]) {
+    //     set1.Add(val);
+    // }
+    // for _,val := range makeRangeStr(round1[2],round1[3]) {
+    //     set2.Add(val);
+    // }
+    // contains := set1.IsSubset(set2) || set2.IsSubset(set1);
+    // overlap := len(set1.Intersect(set2).ToSlice()) != 0;
+    //
+    return output;
+}
+func ReverseSlice[T comparable](s []T) {
+    sort.SliceStable(s, func(i, j int) bool {
+        return i > j;
+    })
+}
+func print_ans1(data map[int][]string){
+    for _,crates := range data {
+        fmt.Printf("bin %d : %s \n",bin,crates[len(crates)-1])
+    }
+}
+func fancy_moves(start map[int][]string, moveslist []string) map[int][]string {
+    re, _ := regexp.Compile(`\D`);
+    for _,moves := range moveslist {
+        // fmt.Printf("start move: %v\n",moves)
+        movesStr := strings.Fields(re.ReplaceAllString(moves," "));
+        amount,_ := strconv.Atoi(movesStr[0]);
+        from,_ := strconv.Atoi(movesStr[1]);
+        to,_ := strconv.Atoi(movesStr[2]);
+        from -= 1;
+        to -=1;
+        if amount > len(start[from]) {
+            amount = len(start[from]);
+        }
+        fmt.Printf("move:\n%v: %v\n", movesStr,start)
+        // crates := start[from][len(start[from])-amount:];
+        var crates []string;
+        crates, start[from] = start[from][len(start[from])-amount:], start[from][:len(start[from])-amount];
+        ReverseSlice(crates);
+        start[to] = append(start[to],crates...);
+
+        // fmt.Printf("moving crate(s):\n%v\n", crates)
+        // fmt.Printf("tree:\n%v", start)
+    }
+    return start;
+}
+func main() {
+	file, _ := os.ReadFile("input");
+	// file, _ := os.ReadFile("test");
+	input := string(file);
+    inputParsed := strings.Split(input,"\n\n");
+    start := strings.Split(inputParsed[0],"\n");
+    moveslist := strings.Split(inputParsed[1],"\n");
+    moveslist = moveslist[:len(moveslist)-1];
+    ReverseSlice(start);
+
+	fmt.Printf("start:\n%v\n", inputParsed[0])
+	// fmt.Printf("\nstartInv:\n%v", start)
+	// fmt.Printf("\nmoves:\n%v\n", len(moveslist))
+    total := 0;
+    // var lines []string;
+	// for scanner.Scan() {
+		// input := scanner.Text();
+    data := parse_input(start);
+    data = fancy_moves(data,moveslist);
+    print_ans1(data);
+	fmt.Printf("ans1: %d, ans2: %v", total, data)
+    // Wrong: RQFCHNCVFM
+}

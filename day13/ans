@@ -1,0 +1,10 @@
+Start Right: [[8,7,6]], Left: [9]
+Loop 9:[8,7,6]
+Lefts: 9 -- 
+Rights: [8 -- 7,6]
+Start Loop 9:[8, [9]:[[8 7,6]]
+Making left to a list
+Start Right: 7,6], Left: [9]
+Done index 0!
+ans1: 1, ans2: [1], tot: 
+0

@@ -1,0 +1,13 @@
+Cycles: 20, strength: 460
+Cycles: 60, strength: 120
+Cycles: 100, strength: 3900
+Cycles: 140, strength: 2380
+Cycles: 180, strength: 3780
+Cycles: 220, strength: 4840
+ans1: 15480, ans2: 0, tot: 
+###  #  # #    #  #   ##  ##  ####  ##  
+#  # #  # #    #  #    # #  #    # #  # 
+#  # #### #    ####    # #      #  #  # 
+###  #  # #    #  #    # # ##  #   #### 
+#    #  # #    #  # #  # #  # #    #  # 
+#    #  # #### #  #  ##   ### #### #  # 
